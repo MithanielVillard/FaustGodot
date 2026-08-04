@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dp5i3nv1jjs3u"]
+
+[ext_resource type="Script" uid="uid://dopbef3gxx7jf" path="res://test_script.dsp" id="1_5hfv0"]
+
+[sub_resource type="AudioStreamFaust" id="AudioStreamFaust_kre30"]
+dsp = ExtResource("1_5hfv0")
+frequency = 472.09
+volume = -20.9
+
+[node name="Node3D" type="Node3D" unique_id=1594479344]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=2106408220]
+stream = SubResource("AudioStreamFaust_kre30")

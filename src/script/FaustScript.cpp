@@ -1,0 +1,100 @@
+#include "script/FaustScript.h"
+#include "script/FaustScriptLanguage.h"
+#include "AudioStreamFaust.h"
+
+#include <godot_cpp/variant/utility_functions.hpp>
+
+using namespace godot;
+
+String FaustScript::_get_source_code() const
+{
+    return m_sourceCode;
+}
+
+void FaustScript::_set_source_code(const String &p_code)
+{
+    m_sourceCode = p_code;
+    _reload(true);
+}
+
+bool FaustScript::_has_source_code() const
+{
+    return !m_sourceCode.is_empty();
+}
+
+bool FaustScript::_can_instantiate() const
+{
+    return false;
+}
+
+Error FaustScript::_reload(bool p_keep_state)
+{
+    //TODO Compile to bytecode
+    const char* argv[] = {"-ct 1", "-es 1", "-mcd 16", "-mdd 1024" , "-mdy 33", "-single", "-ftz 0"};
+    std::string error_msg;
+
+    m_pFactory = createDSPFactoryFromString("godot", m_sourceCode.ascii().get_data(), 0, argv, "", error_msg);
+    if (!m_pFactory)
+    {
+        UtilityFunctions::printerr(error_msg.data());
+        return FAILED;
+    }
+
+    for (AudioStreamFaust* as : m_audioStreams)
+        as->UpdateDsp();
+
+    return OK;
+}
+
+Ref<Script> FaustScript::_get_base_script() const
+{
+    return ScriptExtension::_get_base_script();
+}
+
+bool FaustScript::_is_tool() const
+{
+    return false;
+}
+
+bool FaustScript::_has_static_method(const StringName &p_method) const
+{
+    return false;
+}
+
+void FaustScript::_update_exports()
+{
+    ScriptExtension::_update_exports();
+}
+
+TypedArray<Dictionary> FaustScript::_get_documentation() const
+{
+    Dictionary dic;
+    dic["FaustScript"] = "hello world";
+    return TypedArray<Dictionary> { dic };
+}
+
+ScriptLanguage* FaustScript::_get_language() const
+{
+    return FaustScriptLanguage::get_instance();
+}
+
+StringName FaustScript::_get_doc_class_name() const
+{
+    return "FaustScript";
+}
+
+std::list<AudioStreamFaust*>::iterator FaustScript::Attach(AudioStreamFaust& audioStream)
+{
+    m_audioStreams.push_back(&audioStream);
+    ListIt end = m_audioStreams.end();
+    std::advance(end, -1);
+    return end;
+}
+
+void FaustScript::Detach(ListIt const it)
+{
+    if (!m_audioStreams.empty())
+        m_audioStreams.erase(it);
+}
+
+void FaustScript::_bind_methods(){}

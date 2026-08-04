@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class name="FaustScript" inherits="Script" category="Core" version="4.7">
+    <brief_description>
+        Faust language script.
+    </brief_description>
+    <description></description>
+    <tutorials></tutorials>
+    <methods>
+        <method name="osc">
+            <return type="void" />
+            <param index="0" name="position" type="Vector3" />
+            <param index="0" name="freq" type="float" default="440" />
+            <description>
+                Default sine wave oscillator (same as oscsin). osc is a standard Faust function.
+            </description>
+        </method>
+    </methods>
+    <members>
+    </members>
+    <signals></signals>
+    <constants></constants>
+    <theme_items></theme_items>
+</class>

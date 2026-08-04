@@ -1,0 +1,28 @@
+[configuration]
+
+entry_symbol = "faust2godot_init"
+compatibility_minimum = "4.1"
+reloadable = true
+
+[libraries]
+
+macos.debug = "res://bin/macos/faust2godot.macos.template_debug.x86_64.dylib"
+macos.release = "res://bin/macos/faust2godot.macos.template_release.x86_64.dylib"
+windows.debug.x86_32 = "res://bin/windows/faust2godot.windows.template_debug.x86_32.dll"
+windows.release.x86_32 = "res://bin/windows/faust2godot.windows.template_release.x86_32.dll"
+windows.debug.x86_64 = "res://bin/windows/faust2godot.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "res://bin/windows/faust2godot.windows.template_release.x86_64.dll"
+linux.debug.x86_64 = "res://bin/linux/faust2godot.linux.template_debug.x86_64.so"
+linux.release.x86_64 = "res://bin/linux/faust2godot.linux.template_release.x86_64.so"
+linux.debug.arm64 = "res://bin/linux/faust2godot.linux.template_debug.arm64.so"
+linux.release.arm64 = "res://bin/linux/faust2godot.linux.template_release.arm64.so"
+linux.debug.rv64 = "res://bin/linux/faust2godot.linux.template_debug.rv64.so"
+linux.release.rv64 = "res://bin/linux/faust2godot.linux.template_release.rv64.so"
+
+[dependencies]
+ios.debug = {
+    "res://bin/libgodot-cpp.ios.template_debug.xcframework": ""
+}
+ios.release = {
+    "res://bin/libgodot-cpp.ios.template_release.xcframework": ""
+}
