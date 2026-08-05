@@ -11,11 +11,6 @@ set(CMAKE_CXX_STANDARD 20) #std c++ 20
 set(CMAKE_CXX_STANDARD_REQUIRED ON) #std c++ 20
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if (WIN32)
-  set(FAUSTPATH "$ENV{ProgramFiles}/faust/include" CACHE STRING "Faust include directory")
-endif ()
-
-
 option(BUILD_TESTS "Build test programs" OFF)
 
 # Make sure all the dependencies are satisfied
@@ -50,10 +45,8 @@ file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/godot-cpp/gen/include")
 # Add godot-cpp's module path and include the exported functions.
 # This is made available for documentation generation
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${godot-cpp_SOURCE_DIR}/cmake")
-include(GodotCPPModule)
-include(cmake_modules/FaustLib.cmake)
 
-link_directories(lib)
+include(GodotCPPModule)
 
 # The godot-cpp target has some of useful properties attached that can be retrieved like so.
 get_target_property(GODOTCPP_SUFFIX godot::cpp GODOTCPP_SUFFIX)
@@ -67,12 +60,21 @@ project(faust2godot
     LANGUAGES CXX
 )
 
+include(cmake_modules/FaustLib.cmake)
+include(cmake_modules/LLVM.cmake)
+
+## On Linux "force" the link with stdc++
+if(UNIX AND NOT APPLE)
+  set(FAUST_LIBS  "stdc++"  CACHE STRING  "FAUST LIBRARIES" FORCE)
+endif()
+
 add_library(${LIBNAME} SHARED)
 target_include_directories(${LIBNAME} PUBLIC "include/")
 
 if (WIN32)
+  set(FAUSTPATH "$ENV{ProgramFiles}/faust/include" CACHE STRING "Faust include directory")
   target_include_directories(${LIBNAME} PUBLIC ${FAUSTPATH})
-endif()
+endif ()
 
 target_sources(${LIBNAME}
     PRIVATE
@@ -105,6 +107,7 @@ if(DOC_XML)
 endif()
 
 target_link_libraries(${LIBNAME} PRIVATE godot-cpp)
+target_link_libraries(${PROJECT_NAME} PRIVATE LLVM)
 target_link_libraries(${LIBNAME} PRIVATE dynamiclib)
 
 # Require at least C++20 for this target

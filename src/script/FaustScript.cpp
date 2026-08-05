@@ -29,11 +29,12 @@ bool FaustScript::_can_instantiate() const
 
 Error FaustScript::_reload(bool p_keep_state)
 {
+
     //TODO Compile to bytecode
-    const char* argv[] = {"-ct 1", "-es 1", "-mcd 16", "-mdd 1024" , "-mdy 33", "-single", "-ftz 0"};
+    const char* argv = "";
     std::string error_msg;
 
-    m_pFactory = createDSPFactoryFromString("godot", m_sourceCode.ascii().get_data(), 0, argv, "", error_msg);
+    m_pFactory = createDSPFactoryFromString("godot", m_sourceCode.ascii().get_data(), 0, &argv, "", error_msg);
     if (!m_pFactory)
     {
         UtilityFunctions::printerr(error_msg.data());

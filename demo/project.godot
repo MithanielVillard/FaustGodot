@@ -11,7 +11,6 @@ config_version=5
 [application]
 
 config/name="faust2godot-demo"
-run/main_scene="uid://dp5i3nv1jjs3u"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 

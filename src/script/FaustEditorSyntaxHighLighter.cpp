@@ -2,6 +2,7 @@
 
 #include "godot_cpp/classes/code_highlighter.hpp"
 #include "godot_cpp/classes/editor_interface.hpp"
+#include "godot_cpp/classes/gd_script_syntax_highlighter.hpp"
 #include "godot_cpp/classes/script_editor.hpp"
 #include "godot_cpp/classes/text_edit.hpp"
 
@@ -30,6 +31,9 @@ PackedStringArray FaustEditorSyntaxHighlighter::_get_supported_languages() const
 
 Dictionary FaustEditorSyntaxHighlighter::_get_line_syntax_highlighting(int32_t p_line) const
 {
+
+    return SyntaxHighlighter::_get_line_syntax_highlighting(p_line);
+
     Dictionary dic;
 
     Dictionary red;
@@ -41,6 +45,11 @@ Dictionary FaustEditorSyntaxHighlighter::_get_line_syntax_highlighting(int32_t p
     dic[0] = red;
     dic[5] = green;
     return dic;
+}
+
+void FaustEditorSyntaxHighlighter::_update_cache()
+{
+    EditorSyntaxHighlighter::_update_cache();
 }
 
 void FaustEditorSyntaxHighlighter::Register()

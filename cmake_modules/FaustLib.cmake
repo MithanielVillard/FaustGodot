@@ -40,6 +40,8 @@ set(OLDCPP_BACKEND OFF                            CACHE STRING  "Include old CPP
 set(RUST_BACKEND   OFF                            CACHE STRING  "Include RUST backend"      FORCE)
 set(WASM_BACKEND   OFF                            CACHE STRING  "Include WASM backend"  FORCE)
 
+option(LINK_LLVM_STATIC OFF)
+
 ## Call the faust cmakelist.txt
 add_subdirectory(./faust/build EXCLUDE_FROM_ALL)
 

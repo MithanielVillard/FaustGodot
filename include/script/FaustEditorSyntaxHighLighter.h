@@ -16,6 +16,7 @@ public:
     PackedStringArray _get_supported_languages() const override;
 
     Dictionary _get_line_syntax_highlighting(int32_t p_line) const override;
+    void _update_cache() override;
 
     static void Register();
     static void Unregister();
