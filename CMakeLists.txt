@@ -114,6 +114,10 @@ target_link_libraries(${LIBNAME} PRIVATE godot-cpp)
 
 target_link_libraries(${LIBNAME} PRIVATE dynamiclib)
 
+if (APPLE)
+  set(CMAKE_SHARED_LINKER_FLAGS "-L$(brew --prefix zstd)/lib")
+endif ()
+
 # Require at least C++20 for this target
 set_property(TARGET ${LIBNAME} PROPERTY CXX_STANDARD 20)
 
