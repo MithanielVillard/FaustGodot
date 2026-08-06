@@ -21,16 +21,16 @@ if(DEFINED LLVM_DIR)
 endif()
 
 ## Hardcoded targets for faust
-set(INCLUDE_STATIC      ON CACHE STRING  "Include static library"      FORCE)
+set(INCLUDE_STATIC      OFF CACHE STRING  "Include static library"      FORCE)
 set(INCLUDE_EXECUTABLE  OFF CACHE STRING  "Include runtime executable"  FORCE)
-set(INCLUDE_DYNAMIC     OFF CACHE STRING  "Include dynamic library"     FORCE)
+set(INCLUDE_DYNAMIC     ON CACHE STRING   "Include dynamic library"     FORCE)
 set(INCLUDE_OSC         OFF CACHE STRING  "Include Faust OSC library"   FORCE)
 set(INCLUDE_HTTP        OFF CACHE STRING  "Include Faust HTTPD library" FORCE)
 
 ## Hardcoded backends for faust
 set(ASMJS_BACKEND  OFF                            CACHE STRING  "Include ASMJS backend" FORCE)
 set(C_BACKEND      OFF                            CACHE STRING  "Include C backend"         FORCE)
-set(CPP_BACKEND    COMPILER STATIC DYNAMIC        CACHE STRING  "Include CPP backend"       FORCE)
+set(CPP_BACKEND    OFF                            CACHE STRING  "Include CPP backend"       FORCE)
 set(FIR_BACKEND    COMPILER STATIC DYNAMIC        CACHE STRING  "Include FIR backend"       FORCE)
 set(INTERP_BACKEND COMPILER STATIC DYNAMIC        CACHE STRING  "Include INTERPRETER backend" FORCE)
 set(JAVA_BACKEND   OFF                            CACHE STRING  "Include JAVA backend"      FORCE)

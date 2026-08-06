@@ -112,7 +112,7 @@ target_link_libraries(${LIBNAME} PRIVATE godot-cpp)
 #  uncomment for llvm support
 #  target_link_libraries(${PROJECT_NAME} PRIVATE LLVM)
 
-target_link_libraries(${LIBNAME} PRIVATE staticlib)
+target_link_libraries(${LIBNAME} PRIVATE dynamiclib)
 
 # Require at least C++20 for this target
 set_property(TARGET ${LIBNAME} PROPERTY CXX_STANDARD 20)

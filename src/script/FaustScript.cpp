@@ -39,7 +39,7 @@ bool FaustScript::_can_instantiate() const
 Error FaustScript::_reload(bool p_keep_state)
 {
     //TODO Compile to bytecode
-    const char* argv[] =  { "--import-dir M:/Github/FaustGodot/demo/bin/libraries" };
+    const char* argv[] =  { "--import-dir demo/bin/libraries" };
     std::string error_msg;
 
     m_pFactory = createInterpreterDSPFactoryFromString("godot", m_sourceCode.ascii().get_data(), 1, argv, error_msg);
