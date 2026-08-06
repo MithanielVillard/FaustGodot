@@ -19,10 +19,6 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
-#include <llvm/ExecutionEngine/MCJIT.h>
-#include <llvm/Support/TargetSelect.h>
-#include <llvm-c/Target.h>
-
 using namespace godot;
 
 void InitializeFaust2GodotModule(ModuleInitializationLevel level)
@@ -56,8 +52,6 @@ void InitializeFaust2GodotModule(ModuleInitializationLevel level)
         FaustScriptResourceFormatLoader::Register();
 
         EditorPlugins::add_by_type<EditorPluginFaust>();
-
-        llvm::InitializeNativeTarget();
     }
 }
 

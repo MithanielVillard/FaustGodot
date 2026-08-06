@@ -52,6 +52,10 @@ include(GodotCPPModule)
 get_target_property(GODOTCPP_SUFFIX godot::cpp GODOTCPP_SUFFIX)
 get_target_property(GODOTCPP_PLATFORM godot::cpp GODOTCPP_PLATFORM)
 
+#  uncomment for llvm support
+#  include(cmake_modules/LLVM.cmake)
+include(cmake_modules/FaustLib.cmake)
+
 # Now we can specify our own project which will inherit any global cmake properties or variables that have been defined.
 project(faust2godot
     VERSION 1.0
@@ -60,21 +64,20 @@ project(faust2godot
     LANGUAGES CXX
 )
 
-include(cmake_modules/FaustLib.cmake)
-include(cmake_modules/LLVM.cmake)
-
 ## On Linux "force" the link with stdc++
 if(UNIX AND NOT APPLE)
   set(FAUST_LIBS  "stdc++"  CACHE STRING  "FAUST LIBRARIES" FORCE)
 endif()
 
 add_library(${LIBNAME} SHARED)
-target_include_directories(${LIBNAME} PUBLIC "include/")
 
-if (WIN32)
-  set(FAUSTPATH "$ENV{ProgramFiles}/faust/include" CACHE STRING "Faust include directory")
-  target_include_directories(${LIBNAME} PUBLIC ${FAUSTPATH})
-endif ()
+target_include_directories(${LIBNAME} PUBLIC "include/")
+target_include_directories(${LIBNAME} PUBLIC "faust/architecture")
+
+#if (WIN32)
+#  set(FAUSTPATH "$ENV{ProgramFiles}/faust/include" CACHE STRING "Faust include directory")
+#  target_include_directories(${LIBNAME} PUBLIC ${FAUSTPATH})
+#endif ()
 
 target_sources(${LIBNAME}
     PRIVATE
@@ -94,7 +97,6 @@ target_sources(${LIBNAME}
     src/MidiHandlerFaust.cpp
     src/GodotMapUI.cpp
     src/GodotMidi.cpp
-    src/GodotDsp.cpp
 )
 
 # Fetch a list of the xml files to use for documentation and add to our target
@@ -107,8 +109,10 @@ if(DOC_XML)
 endif()
 
 target_link_libraries(${LIBNAME} PRIVATE godot-cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE LLVM)
-target_link_libraries(${LIBNAME} PRIVATE dynamiclib)
+#  uncomment for llvm support
+#  target_link_libraries(${PROJECT_NAME} PRIVATE LLVM)
+
+target_link_libraries(${LIBNAME} PRIVATE staticlib)
 
 # Require at least C++20 for this target
 set_property(TARGET ${LIBNAME} PROPERTY CXX_STANDARD 20)

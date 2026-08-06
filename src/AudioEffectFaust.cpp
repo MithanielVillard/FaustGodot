@@ -1,5 +1,4 @@
 #include "AudioEffectFaust.h"
-#include "GodotDsp.h"
 #include "GodotMapUI.h"
 
 #include <godot_cpp/core/property_info.hpp>
@@ -26,8 +25,8 @@ Ref<AudioEffectInstance> AudioEffectFaust::_instantiate()
     ins.instantiate();
 
     ins->m_base  = Ref<AudioEffectFaust>(this);
-    ins->m_dsp.buildUserInterface(m_dspUI.get());
-    ins->m_dsp.buildUserInterface(m_midiUI.get());
+    ins->m_pDspInstance->buildUserInterface(m_dspUI.get());
+    ins->m_pDspInstance->buildUserInterface(m_midiUI.get());
 
     return ins;
 }
@@ -129,7 +128,7 @@ void AudioEffectFaustInstance::_process(void const* pSrcFrames, AudioFrame* pDst
          m_input[1][i] = src[i].right;
     }
 
-     m_dsp.Compute(frameCount, m_input, m_output);
+     m_pDspInstance->compute(frameCount, m_input, m_output);
 
     for (int i = 0; i < frameCount; i++)
     {

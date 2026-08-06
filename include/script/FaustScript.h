@@ -2,6 +2,7 @@
 
 #include <list>
 #include <faust/dsp/llvm-dsp.h>
+#include <faust/dsp/interpreter-dsp.h>
 #include <godot_cpp/classes/script_extension.hpp>
 #include <godot_cpp/classes/script_language.hpp>
 
@@ -18,7 +19,7 @@ public:
     using ListIt = std::list<AudioStreamFaust*>::iterator;
 
     FaustScript() = default;
-    ~FaustScript() override = default;
+    ~FaustScript() override;
 
     String _get_source_code() const override;
     void _set_source_code(const String &p_code) override;
@@ -33,7 +34,7 @@ public:
 
     TypedArray<Dictionary> _get_documentation() const override;
     ScriptLanguage* _get_language() const override;
-    llvm_dsp_factory* get_dsp_factory() const { return m_pFactory; }
+    interpreter_dsp_factory* get_dsp_factory() const { return m_pFactory; }
     StringName _get_doc_class_name() const override;
 
 
@@ -45,7 +46,7 @@ protected:
 
 private:
     String m_sourceCode;
-    llvm_dsp_factory* m_pFactory {};
+    interpreter_dsp_factory* m_pFactory {};
     std::list<AudioStreamFaust*> m_audioStreams {};
 };
 

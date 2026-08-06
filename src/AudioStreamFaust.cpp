@@ -4,7 +4,6 @@
 #include <faust/gui/MidiUI.h>
 #include <godot_cpp/classes/audio_stream_player.hpp>
 #include <godot_cpp/classes/input.hpp>
-#include <godot_cpp/variant/utility_functions.hpp>
 
 using namespace godot;
 

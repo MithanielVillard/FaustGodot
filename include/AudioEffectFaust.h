@@ -1,7 +1,6 @@
 #pragma once
 
 #include "defines.h"
-#include "GodotDsp.h"
 #include "GodotMidi.h"
 #include "IPropertyHandler.h"
 
@@ -35,7 +34,7 @@ namespace godot
     private:
         friend AudioEffectFaust;
 
-        GodotDsp m_dsp;
+        dsp* m_pDspInstance;
         Ref<AudioEffectFaust> m_base;
 
         //Hardcoded 2 inputs and outputs. Seems to be a godot hard limitation

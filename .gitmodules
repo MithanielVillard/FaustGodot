@@ -7,4 +7,4 @@
 	url = https://github.com/google/googletest.git
 [submodule "faust"]
 	path = faust
-	url = https://github.com/grame-cncm/faust
+	url = https://github.com/grame-cncm/faust.git

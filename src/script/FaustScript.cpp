@@ -1,10 +1,19 @@
 #include "script/FaustScript.h"
+
+#include <filesystem>
+#include <iostream>
+
 #include "script/FaustScriptLanguage.h"
 #include "AudioStreamFaust.h"
 
 #include <godot_cpp/variant/utility_functions.hpp>
 
 using namespace godot;
+
+FaustScript::~FaustScript()
+{
+    deleteInterpreterDSPFactory(m_pFactory);
+}
 
 String FaustScript::_get_source_code() const
 {
@@ -29,12 +38,11 @@ bool FaustScript::_can_instantiate() const
 
 Error FaustScript::_reload(bool p_keep_state)
 {
-
     //TODO Compile to bytecode
-    const char* argv = "";
+    const char* argv[] =  { "--import-dir M:/Github/FaustGodot/demo/bin/libraries" };
     std::string error_msg;
 
-    m_pFactory = createDSPFactoryFromString("godot", m_sourceCode.ascii().get_data(), 0, &argv, "", error_msg);
+    m_pFactory = createInterpreterDSPFactoryFromString("godot", m_sourceCode.ascii().get_data(), 1, argv, error_msg);
     if (!m_pFactory)
     {
         UtilityFunctions::printerr(error_msg.data());
