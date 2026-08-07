@@ -2,6 +2,8 @@
 
 
 #include <godot_cpp/classes/editor_syntax_highlighter.hpp>
+#include <godot_cpp/classes/gd_script_syntax_highlighter.hpp>
+#include <godot_cpp/classes/text_edit.hpp>
 
 namespace godot
 {
@@ -26,6 +28,8 @@ protected:
 
 private:
     static Ref<FaustEditorSyntaxHighlighter> m_sHighlighter;
+    Ref<GDScriptSyntaxHighlighter> m_gdSyntaxHighlighter;
+    TextEdit* m_pTextEdit;
 };
 
 }

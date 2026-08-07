@@ -10,10 +10,16 @@ using namespace godot;
 
 Ref<FaustEditorSyntaxHighlighter> FaustEditorSyntaxHighlighter::m_sHighlighter {};
 
+
 Ref<EditorSyntaxHighlighter> FaustEditorSyntaxHighlighter::_create() const
 {
     Ref<FaustEditorSyntaxHighlighter> instance;
+
     instance.instantiate();
+    instance->m_gdSyntaxHighlighter.instantiate();
+    instance->m_pTextEdit = memnew(TextEdit);
+    instance->m_pTextEdit->set_syntax_highlighter(instance->m_gdSyntaxHighlighter);
+
     return instance;
 }
 
@@ -31,8 +37,8 @@ PackedStringArray FaustEditorSyntaxHighlighter::_get_supported_languages() const
 
 Dictionary FaustEditorSyntaxHighlighter::_get_line_syntax_highlighting(int32_t p_line) const
 {
-
-    return SyntaxHighlighter::_get_line_syntax_highlighting(p_line);
+    m_pTextEdit->set_text(get_text_edit()->get_text());
+    return m_gdSyntaxHighlighter->get_line_syntax_highlighting(p_line);
 
     Dictionary dic;
 
@@ -49,7 +55,7 @@ Dictionary FaustEditorSyntaxHighlighter::_get_line_syntax_highlighting(int32_t p
 
 void FaustEditorSyntaxHighlighter::_update_cache()
 {
-    EditorSyntaxHighlighter::_update_cache();
+    m_gdSyntaxHighlighter->update_cache();
 }
 
 void FaustEditorSyntaxHighlighter::Register()
