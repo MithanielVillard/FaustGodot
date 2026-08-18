@@ -1,0 +1,8 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+	<defs>
+		<image width="14" height="16" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAYAAAAmlE46AAABVklEQVQoU52SPSiFYRiGr7soJmRhInYpZaH8DQYmoSg/k7KZpZzFjMEgmyKsLEootlMog4GVQcpgIKlHz+c5b+ccE/fyPs99f9f7vX+iTGY2DBwmAwyYkrSTHECpCpnZATCWjB/5RCOSvgpGCWhmdcATUJXMHz0DvZLuCkY5OAdsRvseY3WMC5LWo/4FXgJd0fryPoqWfQEMSsomTKCZtQL3Rd5s/HUvvDdgQFLew2IwByxH+wj0AX4YZ0BT+CuSlrzIQDPz8QFoiQ/8ZCc9AvaB0fBvgH5JrwWwO/aQtUCHpOvIJgC/Q//2ExiSdFIAfZnTAd5JGoras2ZgF2gIa1tSLu3xr/o/aGYDwGoc/bykq5QWyczagTWgFsg56E+sMfK8pM6ok8ysAjjyBxDWuYMvQH0Yt5Laok4ys0rgOO7WlYHjwEY8rxlJpxGWyMx6gC2gBlj8Bj0OdzaStOzhAAAAEGRlQkczREI1ODA5NkNCNDU3QTJFXS0ZogAAAABJRU5ErkJggg=="/>
+	</defs>
+	<style>
+	</style>
+	<use id="Faust" href="#img1" transform="matrix(1,0,0,1,1,0)"/>
+</svg>

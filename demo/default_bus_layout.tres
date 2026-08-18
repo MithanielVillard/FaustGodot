@@ -1,0 +1,13 @@
+[gd_resource type="AudioBusLayout" format=3 uid="uid://863gbqettcd7"]
+
+[ext_resource type="Script" uid="uid://1750b1ugelhc" path="res://echo.dsp" id="1_g28q7"]
+
+[sub_resource type="AudioEffectFaust" id="AudioEffectFaust_j3pel"]
+dsp = ExtResource("1_g28q7")
+feedback = 0.0
+millisecond = 0.0
+resource_name = "Faust"
+
+[resource]
+bus/0/effect/0/effect = SubResource("AudioEffectFaust_j3pel")
+bus/0/effect/0/enabled = true

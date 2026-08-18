@@ -19,6 +19,11 @@ linux.release.arm64 = "res://bin/linux/faust2godot.linux.template_release.arm64.
 linux.debug.rv64 = "res://bin/linux/faust2godot.linux.template_debug.rv64.so"
 linux.release.rv64 = "res://bin/linux/faust2godot.linux.template_release.rv64.so"
 
+[icons]
+AudioStreamFaust = "res://bin/icons/AudioStreamFaust.svg"
+FaustScript = "res://bin/icons/FaustScript.svg"
+MidiHandlerFaust = "res://bin/icons/MidiHandlerFaust.svg"
+
 [dependencies]
 ios.debug = {
     "res://bin/libgodot-cpp.ios.template_debug.xcframework": ""

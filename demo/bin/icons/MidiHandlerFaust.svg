@@ -1,0 +1,8 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+	<defs>
+		<image width="16" height="12" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAMCAYAAABr5z2BAAAAz0lEQVQoU93SPy4EcBDF8c/UoqChERLEAZYDqDQ6ES6ATmW7TSQKiah01gVE4gyrUfnTiQhxAC0HGPnFUCnoxFSTeZOXzHdeZOY0LjHud/WG1cjMTfSxiDkc4wHdmg9jCxu1s4eL0gZfBhHR+gVc4RpLuMEI5rGPNaxHxFlmNu32HxqM4Qh3OMQOZrGN5WLQjYjHbxm032RmI/4UEYPM7KATESeZOdUA4uCD918yWME5TithM5Wyl8rAKJ4xhEnc117LSf/z7h4mSvhpvWL3Hb1QtR8qw7YPAAAAEGRlQkdCNjI1Rjk0NDQ0NEM0Mzk1rCb/2wAAAABJRU5ErkJggg=="/>
+	</defs>
+	<style>
+	</style>
+	<use id="piano-svgrepo-com" href="#img1" transform="matrix(1,0,0,1,0,2)"/>
+</svg>
