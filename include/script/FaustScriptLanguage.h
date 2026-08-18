@@ -1,6 +1,7 @@
 #pragma once
 
 #include <godot_cpp/classes/script_language_extension.hpp>
+#include <godot_cpp/classes/window.hpp>
 
 namespace godot
 {
@@ -10,6 +11,7 @@ namespace godot
 
     public:
         void _init() override;
+        void _finish() override;
         void _thread_enter() override;
         void _thread_exit() override;
 
@@ -26,6 +28,8 @@ namespace godot
         void _frame() override;
         bool _overrides_external_editor() override;
         Dictionary _validate(const String &p_script, const String &p_path, bool p_validate_functions, bool p_validate_errors, bool p_validate_warnings, bool p_validate_safe_lines) const override;
+        void _reload_scripts(const Array& p_scripts, bool p_soft_reload) override;
+        TypedArray<Dictionary> _debug_get_current_stack_info() override;
 
         bool _supports_documentation() const override;
         Dictionary _complete_code(const String &p_code, const String &p_path, Object *p_owner) const override;
@@ -47,5 +51,7 @@ namespace godot
 
     private:
         static FaustScriptLanguage* m_pInstance;
+
+        Window* m_pPopup {};
     };
 }

@@ -5,12 +5,11 @@
 #include "GodotMidi.h"
 #include "IPropertyHandler.h"
 #include "script/FaustScript.h"
+#include "IFaustHandler.h"
 
 #include <faust/gui/MidiUI.h>
 #include <godot_cpp/classes/audio_stream.hpp>
 #include <godot_cpp/classes/audio_stream_playback.hpp>
-
-
 
 namespace godot
 {
@@ -46,7 +45,7 @@ namespace godot
     };
 
 
-    class AudioStreamFaust : public AudioStream, public IPropertyHandler
+    class AudioStreamFaust : public AudioStream, public IFaustHandler, public IPropertyHandler
     {
     GDCLASS(AudioStreamFaust, AudioStream)
 
@@ -64,11 +63,10 @@ namespace godot
         List<PropertyInfo>& GetPropertyList() override;
         void NotifyPropertyChanged() override;
 
-        void set_faust_dsp(Ref<FaustScript> const& script);
-        Ref<FaustScript> get_faust_dsp() const { return m_faustScript; }
+        void set_faust_dsp(Ref<FaustScript> const& script) override;
+        Ref<FaustScript> get_faust_dsp() const override { return m_faustScript; }
 
-        void UpdateDsp();
-
+        void UpdateDsp() override;
     protected:
         static void _bind_methods();
         bool _set(const StringName &p_path, const Variant &p_value);
@@ -83,9 +81,10 @@ namespace godot
         uptr<MidiUI> m_midiUI;
 
         dsp* m_pDspInstance;
-        FaustScript::ListIt m_faustScriptIt;
 
+        FaustScript::ListIt m_faustScriptIt;
         Ref<FaustScript> m_faustScript;
+
         List<PropertyInfo> m_propertyList;
     };
 

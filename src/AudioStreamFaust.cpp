@@ -97,6 +97,8 @@ void AudioStreamFaust::UpdateDsp()
     m_dspUI->getLabelMap().clear();
     m_dspUI->getShortnameMap().clear();
 
+    if (m_faustScript->get_dsp_factory() == nullptr) return;
+
     m_pDspInstance = m_faustScript->get_dsp_factory()->createDSPInstance();
     m_pDspInstance->buildUserInterface(m_dspUI.get());
     m_pDspInstance->buildUserInterface(m_midiUI.get());

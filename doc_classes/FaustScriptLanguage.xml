@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class name="FaustScript" inherits="ScriptExtension" category="Core">
+<class name="FaustScriptLanguage" inherits="ScriptLanguageExtension" category="Core">
     <brief_description>
-        The Faust DSP Language. https://faust.grame.fr/
+        Faust language script.
     </brief_description>
     <description></description>
     <tutorials></tutorials>

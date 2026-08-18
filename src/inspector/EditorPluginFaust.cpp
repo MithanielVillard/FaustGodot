@@ -1,6 +1,7 @@
 #include "inspector/EditorPluginFaust.h"
-
 #include "script/FaustEditorSyntaxHighLighter.h"
+
+#include <godot_cpp/classes/editor_interface.hpp>
 
 void godot::EditorPluginFaust::_enter_tree()
 {

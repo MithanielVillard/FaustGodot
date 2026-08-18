@@ -3,11 +3,12 @@
 #include "defines.h"
 #include "GodotMidi.h"
 #include "IPropertyHandler.h"
+#include "script/FaustScript.h"
+#include "IFaustHandler.h"
 
 #include <godot_cpp/classes/audio_effect_instance.hpp>
 #include <godot_cpp/classes/audio_effect.hpp>
 #include <faust/gui/MidiUI.h>
-
 
 class GodotDsp;
 class GodotMapUI;
@@ -16,7 +17,7 @@ namespace godot
 {
     class AudioEffectFaust;
 
-    class AudioEffectFaustInstance : public AudioEffectInstance
+    class AudioEffectFaustInstance : public AudioEffectInstance, public IFaustHandler
     {
     GDCLASS(AudioEffectFaustInstance, AudioEffectInstance)
 
@@ -28,14 +29,20 @@ namespace godot
 
         bool _process_silence() const override;
 
+        void set_faust_dsp(Ref<FaustScript> const& script) override;
+        Ref<FaustScript> get_faust_dsp() const override { return m_faustScript; }
+
+        void UpdateDsp() override;
+
     protected:
         static void _bind_methods();
 
     private:
         friend AudioEffectFaust;
 
-        dsp* m_pDspInstance;
+        dsp* m_pDspInstance {};
         Ref<AudioEffectFaust> m_base;
+        std::list<AudioEffectFaustInstance*>::iterator m_listIter;
 
         //Hardcoded 2 inputs and outputs. Seems to be a godot hard limitation
         float* m_input[2] {};
@@ -59,6 +66,9 @@ namespace godot
         List<PropertyInfo>& GetPropertyList() override;
         void NotifyPropertyChanged() override;
 
+        void set_faust_dsp(Ref<FaustScript> const& script);
+        Ref<FaustScript> get_faust_dsp() const { return m_faustScript; }
+
     protected:
         static void _bind_methods();
        	bool _set(const StringName &p_path, const Variant &p_value);
@@ -70,6 +80,10 @@ namespace godot
         uptr<GodotMidi> m_midiHandler;
         uptr<MidiUI> m_midiUI;
         uptr<GodotMapUI> m_dspUI;
+
+        std::list<AudioEffectFaustInstance*> m_effectInstances;
+
+        Ref<FaustScript> m_faustScript;
 
         List<PropertyInfo> m_propertyList;
     };

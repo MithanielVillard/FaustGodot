@@ -2,6 +2,7 @@
 #include "GodotMapUI.h"
 
 #include <godot_cpp/core/property_info.hpp>
+#include <godot_cpp/classes/audio_server.hpp>
 
 using namespace godot;
 
@@ -23,10 +24,14 @@ Ref<AudioEffectInstance> AudioEffectFaust::_instantiate()
 {
     Ref<AudioEffectFaustInstance> ins;
     ins.instantiate();
+    ins->m_base = Ref<AudioEffectFaust>(this);
 
-    ins->m_base  = Ref<AudioEffectFaust>(this);
-    ins->m_pDspInstance->buildUserInterface(m_dspUI.get());
-    ins->m_pDspInstance->buildUserInterface(m_midiUI.get());
+    //Save an iterator to the list in the effect instance so we can erase it in the destructor
+    m_effectInstances.push_back(ins.ptr());
+    auto it = m_effectInstances.end();
+    std::advance(it, -1);
+    ins->m_listIter = it;
+    ins->set_faust_dsp(m_faustScript);
 
     return ins;
 }
@@ -57,7 +62,20 @@ void AudioEffectFaust::NotifyPropertyChanged()
     notify_property_list_changed();
 }
 
-void AudioEffectFaust::_bind_methods() {}
+void AudioEffectFaust::set_faust_dsp(Ref<FaustScript> const& script)
+{
+    m_faustScript = script;
+    for (auto effectInstance : m_effectInstances)
+        effectInstance->set_faust_dsp(script);
+}
+
+void AudioEffectFaust::_bind_methods()
+{
+    ClassDB::bind_method(D_METHOD("get_faust_dsp"), &AudioEffectFaust::get_faust_dsp);
+    ClassDB::bind_method(D_METHOD("set_faust_dsp", "p_dsp"), &AudioEffectFaust::set_faust_dsp);
+
+    ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "dsp", PROPERTY_HINT_RESOURCE_TYPE, "FaustScript"), "set_faust_dsp", "get_faust_dsp");
+}
 
 bool AudioEffectFaust::_set(const StringName &p_path, const Variant &p_value)
 {
@@ -116,10 +134,15 @@ AudioEffectFaustInstance::~AudioEffectFaustInstance()
 
     delete[] m_output[0];
     delete[] m_output[1];
+
+    m_base->m_effectInstances.erase(m_listIter);
+    m_base->m_faustScript->Detach(m_faustScriptIt);
 }
 
 void AudioEffectFaustInstance::_process(void const* pSrcFrames, AudioFrame* pDstFrames, int32 frameCount)
 {
+    if (m_pDspInstance == nullptr) return;
+
     AudioFrame* src = (AudioFrame*)pSrcFrames;
 
     for (int i = 0; i < frameCount; i++)
@@ -143,3 +166,54 @@ bool AudioEffectFaustInstance::_process_silence() const
 }
 
 void AudioEffectFaustInstance::_bind_methods() {}
+
+void AudioEffectFaustInstance::set_faust_dsp(Ref<FaustScript> const &script)
+{
+    if (!m_faustScript.is_null())
+        m_faustScript->Detach(m_faustScriptIt);
+
+    if (!script.is_valid() || script.is_null())
+    {
+        m_faustScript = script;
+        m_pDspInstance = nullptr;
+        m_base->emit_changed();
+        return;
+    }
+
+    m_faustScript = script;
+    m_faustScriptIt = script->Attach(*this);
+    UpdateDsp();
+}
+
+void AudioEffectFaustInstance::UpdateDsp()
+{
+    std::vector<std::pair<StringName, Variant>> valueMap;
+
+    //Save old dsp parameters value
+    for (PropertyInfo& info : m_base->m_propertyList)
+    {
+        if (Variant out; m_base->_get(info.name, out))
+            valueMap.emplace_back(info.name, out);
+    }
+
+    m_base->m_propertyList.clear();
+    m_base->m_dspUI->getFullpathMap().clear();
+    m_base->m_dspUI->getLabelMap().clear();
+    m_base->m_dspUI->getShortnameMap().clear();
+
+    if (m_faustScript->get_dsp_factory() == nullptr) return;
+
+    m_pDspInstance = m_faustScript->get_dsp_factory()->createDSPInstance();
+    m_pDspInstance->buildUserInterface(m_base->m_dspUI.get());
+    m_pDspInstance->buildUserInterface(m_base->m_midiUI.get());
+    m_pDspInstance->init(static_cast<int>(AudioServer::get_singleton()->get_mix_rate()));
+
+    //restore parameters value
+    for ( auto& [name, variant]: valueMap)
+    {
+        if (Variant out;m_base->_get(name, out))
+            m_base->_set(name, variant);
+    }
+
+    m_base->NotifyPropertyChanged();
+}

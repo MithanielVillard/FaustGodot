@@ -1,6 +1,7 @@
 #include "script/FaustScript.h"
 #include "script/FaustScriptLanguage.h"
 #include "AudioStreamFaust.h"
+#include "IFaustHandler.h"
 
 #include <filesystem>
 #include <godot_cpp/variant/utility_functions.hpp>
@@ -46,8 +47,8 @@ Error FaustScript::_reload(bool p_keep_state)
         return FAILED;
     }
 
-    for (AudioStreamFaust* as : m_audioStreams)
-        as->UpdateDsp();
+    for (IFaustHandler* handler : m_audioStreams)
+        handler->UpdateDsp();
 
     return OK;
 }
@@ -75,7 +76,7 @@ void FaustScript::_update_exports()
 TypedArray<Dictionary> FaustScript::_get_documentation() const
 {
     Dictionary dic;
-    dic["FaustScript"] = "hello world";
+    dic["name"] = "Faust";
     return TypedArray<Dictionary> { dic };
 }
 
@@ -89,10 +90,10 @@ StringName FaustScript::_get_doc_class_name() const
     return "FaustScript";
 }
 
-std::list<AudioStreamFaust*>::iterator FaustScript::Attach(AudioStreamFaust& audioStream)
+FaustScript::ListIt FaustScript::Attach(IFaustHandler& audioStream)
 {
-    m_audioStreams.push_back(&audioStream);
-    ListIt end = m_audioStreams.end();
+    m_audioStreams.emplace_back(&audioStream);
+    auto end = m_audioStreams.end();
     std::advance(end, -1);
     return end;
 }

@@ -1,10 +1,11 @@
 #pragma once
 
 #include <list>
-#include <faust/dsp/llvm-dsp.h>
 #include <faust/dsp/interpreter-dsp.h>
 #include <godot_cpp/classes/script_extension.hpp>
 #include <godot_cpp/classes/script_language.hpp>
+
+class IFaustHandler;
 
 namespace godot
 {
@@ -16,7 +17,7 @@ class FaustScript : public ScriptExtension
 GDCLASS(FaustScript, ScriptExtension)
 
 public:
-    using ListIt = std::list<AudioStreamFaust*>::iterator;
+    using ListIt = std::list<IFaustHandler*>::iterator;
 
     FaustScript() = default;
     ~FaustScript() override;
@@ -37,8 +38,7 @@ public:
     interpreter_dsp_factory* get_dsp_factory() const { return m_pFactory; }
     StringName _get_doc_class_name() const override;
 
-
-    ListIt Attach(AudioStreamFaust& audioStream);
+    ListIt Attach(IFaustHandler& audioStream);
     void Detach(ListIt it);
 
 protected:
@@ -47,7 +47,7 @@ protected:
 private:
     String m_sourceCode;
     interpreter_dsp_factory* m_pFactory {};
-    std::list<AudioStreamFaust*> m_audioStreams {};
+    std::list<IFaustHandler*> m_audioStreams {};
 };
 
 }

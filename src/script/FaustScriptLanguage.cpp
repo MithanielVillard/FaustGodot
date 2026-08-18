@@ -2,7 +2,7 @@
 #include "script/FaustScript.h"
 
 #include <godot_cpp/classes/engine.hpp>
-#include <godot_cpp/variant/utility_functions.hpp>
+#include <godot_cpp/classes/editor_interface.hpp>
 
 using namespace godot;
 
@@ -11,6 +11,12 @@ FaustScriptLanguage* FaustScriptLanguage::m_pInstance {};
 void FaustScriptLanguage::_init()
 {
     ScriptLanguageExtension::_init();
+}
+
+void FaustScriptLanguage::_finish()
+{
+    //m_pPopup->queue_free();
+    ScriptLanguageExtension::_finish();
 }
 
 void FaustScriptLanguage::_thread_enter()
@@ -94,29 +100,48 @@ Dictionary FaustScriptLanguage::_validate(const String &p_script, const String &
                                               p_validate_safe_lines);
 }
 
+void FaustScriptLanguage::_reload_scripts(const Array& p_scripts, bool p_soft_reload)
+{
+    ScriptLanguageExtension::_reload_scripts(p_scripts, p_soft_reload);
+}
+
+TypedArray<Dictionary> FaustScriptLanguage::_debug_get_current_stack_info()
+{
+    return ScriptLanguageExtension::_debug_get_current_stack_info();
+}
+
 bool FaustScriptLanguage::_supports_documentation() const
 {
-    return true;
+    return false;
 }
 
 Dictionary FaustScriptLanguage::_complete_code(const String &p_code, const String &p_path, Object *p_owner) const
 {
-    Dictionary dic {};
-    dic.set("call_hint", "Call hint");
-    dic.set("force", "true");
-    return dic;
+    //TODO ADD CODE COMPLETION
+    return {};
 }
 
 Dictionary FaustScriptLanguage::_lookup_code(const String &p_code, const String &p_symbol, const String &p_path,
                                              Object *p_owner) const
 {
-    UtilityFunctions::print(p_symbol);
-    Dictionary dic {};
-    dic.set("result", OK);
-    dic.set("type", LOOKUP_RESULT_CLASS_METHOD);
-    dic.set("class_name", "FaustScript");
-    dic.set("class_member", "osc");
-    dic.set("description", "osc");
+    //TODO ADD MOUSE CODE DOCUMENTATION LOOKUP
+
+    //this was a try at making a custom popup for documentation
+    // m_pInstance->m_pPopup = memnew(Window);
+    // m_pInstance->m_pPopup->set_initial_position(Window::WINDOW_INITIAL_POSITION_ABSOLUTE);
+    // m_pInstance->m_pPopup->set_size(Vector2i(200, 100));
+    // m_pInstance->m_pPopup->set_flag(Window::FLAG_BORDERLESS, true);
+    // m_pInstance->m_pPopup->set_flag(Window::FLAG_ALWAYS_ON_TOP, true);
+    // m_pInstance->m_pPopup->set_flag(Window::FLAG_NO_FOCUS, true);
+    // m_pInstance->m_pPopup->set_flag(Window::FLAG_POPUP, true);
+
+    //m_pPopup->set_position(EditorInterface::get_singleton()->get_editor_main_screen()->get_global_mouse_position());
+    //EditorInterface::get_singleton()->popup_dialog(m_pPopup);
+
+    Dictionary dic;
+    dic["result"] = LOOKUP_RESULT_CLASS;
+    dic["type"] = "";
+
     return dic;
 }
 
