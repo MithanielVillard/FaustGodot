@@ -59,8 +59,8 @@ include(cmake_modules/FaustLib.cmake)
 # Now we can specify our own project which will inherit any global cmake properties or variables that have been defined.
 project(faust2godot
     VERSION 1.0
-    DESCRIPTION "This repository serves as a quickstart template for GDExtension development with Godot 4.0+."
-    HOMEPAGE_URL "https://github.com/enetheru/godot-cpp-template/tree/main"
+    DESCRIPTION "Faust DSP Language integration as a GDExtension."
+    HOMEPAGE_URL "https://github.com/MithanielVillard/FaustGodot.git"
     LANGUAGES CXX
 )
 
