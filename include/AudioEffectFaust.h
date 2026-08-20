@@ -44,6 +44,9 @@ namespace godot
         Ref<AudioEffectFaust> m_base;
         std::list<AudioEffectFaustInstance*>::iterator m_listIter;
 
+        FaustScript::ListIt m_faustScriptIt;
+        Ref<FaustScript> m_faustScript;
+
         //Hardcoded 2 inputs and outputs. Seems to be a godot hard limitation
         float* m_input[2] {};
         float* m_output[2] {};

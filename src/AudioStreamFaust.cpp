@@ -18,6 +18,7 @@ AudioStreamFaust::AudioStreamFaust()
 
 AudioStreamFaust::~AudioStreamFaust()
 {
+    delete m_pDspInstance;
     m_midiHandler->stopMidi();
     if (!m_faustScript.is_null())
         m_faustScript->Detach(m_faustScriptIt);
@@ -83,6 +84,7 @@ String AudioStreamFaust::_get_stream_name() const
 
 void AudioStreamFaust::UpdateDsp()
 {
+    if (m_faustScript.is_null() || !m_faustScript.is_valid()) return;
     std::vector<std::pair<StringName, Variant>> valueMap;
 
     //Save old dsp parameters value
@@ -93,13 +95,20 @@ void AudioStreamFaust::UpdateDsp()
     }
 
     m_propertyList.clear();
-    m_dspUI->getFullpathMap().clear();
-    m_dspUI->getLabelMap().clear();
-    m_dspUI->getShortnameMap().clear();
+
+    // was used previously instead of deleting then recreating but causing issues because the MapUI is not fully cleared
+    // m_dspUI->getFullpathMap().clear();
+    // m_dspUI->getLabelMap().clear();
+    // m_dspUI->getShortnameMap().clear();
 
     if (m_faustScript->get_dsp_factory() == nullptr) return;
 
+    delete m_pDspInstance;
+    m_dspUI.reset();
+
     m_pDspInstance = m_faustScript->get_dsp_factory()->createDSPInstance();
+
+    m_dspUI = std::make_unique<GodotMapUI>(*this);
     m_pDspInstance->buildUserInterface(m_dspUI.get());
     m_pDspInstance->buildUserInterface(m_midiUI.get());
     m_pDspInstance->init(static_cast<int>(AudioServer::get_singleton()->get_mix_rate()));

@@ -94,6 +94,7 @@ target_sources(${LIBNAME}
     src/script/FaustEditorSyntaxHighLighter.cpp
     src/AudioEffectFaust.cpp
     src/AudioStreamFaust.cpp
+    src/AudioStreamPolyphonicFaust.cpp
     src/MidiHandlerFaust.cpp
     src/GodotMapUI.cpp
     src/GodotMidi.cpp

@@ -19,6 +19,8 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
+#include "AudioStreamPolyphonicFaust.h"
+
 using namespace godot;
 
 void InitializeFaust2GodotModule(ModuleInitializationLevel level)
@@ -29,6 +31,7 @@ void InitializeFaust2GodotModule(ModuleInitializationLevel level)
 
         GDREGISTER_CLASS(AudioStreamPlaybackFaust);
         GDREGISTER_CLASS(AudioStreamFaust);
+        GDREGISTER_CLASS(AudioStreamPolyphonicFaust)
         GDREGISTER_CLASS(AudioEffectFaustInstance);
         GDREGISTER_CLASS(AudioEffectFaust);
     }

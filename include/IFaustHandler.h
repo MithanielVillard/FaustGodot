@@ -11,8 +11,4 @@ public:
 
     virtual void set_faust_dsp(godot::Ref<godot::FaustScript> const& script) = 0;
     virtual godot::Ref<godot::FaustScript> get_faust_dsp() const = 0;
-
-protected:
-    godot::FaustScript::ListIt m_faustScriptIt;
-    godot::Ref<godot::FaustScript> m_faustScript;
 };

@@ -17,6 +17,7 @@ AudioEffectFaust::AudioEffectFaust()
 
 AudioEffectFaust::~AudioEffectFaust()
 {
+    m_effectInstances.clear();
     m_midiHandler->stopMidi();
 }
 
@@ -30,6 +31,7 @@ Ref<AudioEffectInstance> AudioEffectFaust::_instantiate()
     m_effectInstances.push_back(ins.ptr());
     auto it = m_effectInstances.end();
     std::advance(it, -1);
+
     ins->m_listIter = it;
     ins->set_faust_dsp(m_faustScript);
 
@@ -135,8 +137,9 @@ AudioEffectFaustInstance::~AudioEffectFaustInstance()
     delete[] m_output[0];
     delete[] m_output[1];
 
+    delete m_pDspInstance;
+    m_faustScript->Detach(m_faustScriptIt);
     m_base->m_effectInstances.erase(m_listIter);
-    m_base->m_faustScript->Detach(m_faustScriptIt);
 }
 
 void AudioEffectFaustInstance::_process(void const* pSrcFrames, AudioFrame* pDstFrames, int32 frameCount)
@@ -197,13 +200,15 @@ void AudioEffectFaustInstance::UpdateDsp()
     }
 
     m_base->m_propertyList.clear();
-    m_base->m_dspUI->getFullpathMap().clear();
-    m_base->m_dspUI->getLabelMap().clear();
-    m_base->m_dspUI->getShortnameMap().clear();
 
     if (m_faustScript->get_dsp_factory() == nullptr) return;
 
+    delete m_pDspInstance;
+    m_base->m_dspUI.reset();
+
     m_pDspInstance = m_faustScript->get_dsp_factory()->createDSPInstance();
+
+    m_base->m_dspUI = std::make_unique<GodotMapUI>(*m_base.ptr());
     m_pDspInstance->buildUserInterface(m_base->m_dspUI.get());
     m_pDspInstance->buildUserInterface(m_base->m_midiUI.get());
     m_pDspInstance->init(static_cast<int>(AudioServer::get_singleton()->get_mix_rate()));

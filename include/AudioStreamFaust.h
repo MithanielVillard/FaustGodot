@@ -51,7 +51,7 @@ namespace godot
 
     public:
         AudioStreamFaust();
-        ~AudioStreamFaust() override;
+        virtual ~AudioStreamFaust() override;
 
         Ref<AudioStreamPlayback> _instantiate_playback() const override;
         String _get_stream_name() const override;
@@ -66,7 +66,7 @@ namespace godot
         void set_faust_dsp(Ref<FaustScript> const& script) override;
         Ref<FaustScript> get_faust_dsp() const override { return m_faustScript; }
 
-        void UpdateDsp() override;
+        virtual void UpdateDsp() override;
     protected:
         static void _bind_methods();
         bool _set(const StringName &p_path, const Variant &p_value);
@@ -75,7 +75,6 @@ namespace godot
 
         friend class AudioStreamPlaybackFaust;
 
-    private:
         uptr<GodotMapUI> m_dspUI;
         uptr<GodotMidi> m_midiHandler;
         uptr<MidiUI> m_midiUI;

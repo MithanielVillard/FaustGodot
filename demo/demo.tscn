@@ -2,17 +2,30 @@
 
 [ext_resource type="Script" uid="uid://dopbef3gxx7jf" path="res://generator.dsp" id="1_5hfv0"]
 [ext_resource type="AudioStream" uid="uid://d37x85c72gjkm" path="res://assets/Test.wav" id="2_0bhed"]
+[ext_resource type="Script" uid="uid://1750b1ugelhc" path="res://echo.dsp" id="2_m0rpm"]
 
-[sub_resource type="AudioStreamFaust" id="AudioStreamFaust_5hfv0"]
+[sub_resource type="AudioStreamFaust" id="AudioStreamFaust_n8wo2"]
 dsp = ExtResource("1_5hfv0")
-frequency = 342.31
+frequency = 468.0
 gate = 0.0
 volume = -20.0
+
+[sub_resource type="AudioStreamPolyphonicFaust" id="AudioStreamPolyphonicFaust_g28q7"]
+global_effect = ExtResource("2_m0rpm")
+dsp = ExtResource("1_5hfv0")
+frequency = 1000.0
+gate = 0.0
+volume = -20.0
+feedback = 56.8
+millisecond = 568.0
 
 [node name="Node3D" type="Node3D" unique_id=1923714195]
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1489662131]
-stream = SubResource("AudioStreamFaust_5hfv0")
+stream = SubResource("AudioStreamFaust_n8wo2")
+
+[node name="AudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="." unique_id=12789363]
+stream = SubResource("AudioStreamPolyphonicFaust_g28q7")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1740733275]
 stream = ExtResource("2_0bhed")
