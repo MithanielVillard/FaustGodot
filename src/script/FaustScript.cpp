@@ -1,4 +1,7 @@
 #include "script/FaustScript.h"
+
+#include <filesystem>
+
 #include "script/FaustScriptLanguage.h"
 #include "AudioStreamFaust.h"
 #include "IFaustHandler.h"
@@ -35,10 +38,11 @@ bool FaustScript::_can_instantiate() const
 
 Error FaustScript::_reload(bool p_keep_state)
 {
-    const char* argv[] =  { "--import-dir bin/libraries" };
+    UtilityFunctions::print(std::filesystem::current_path().c_str());
+    const char* argv[] =  { "--import-dir", "bin/libraries" };
     std::string error_msg;
     
-    m_pFactory = createInterpreterDSPFactoryFromString("godot", m_sourceCode.ascii().get_data(), 1, argv, error_msg);
+    m_pFactory = createInterpreterDSPFactoryFromString("godot", m_sourceCode.ascii().get_data(), 2, argv, error_msg);
     if (!m_pFactory)
     {
         UtilityFunctions::printerr(error_msg.data());
@@ -69,6 +73,11 @@ bool FaustScript::_has_static_method(const StringName &p_method) const
 void FaustScript::_update_exports()
 {
     ScriptExtension::_update_exports();
+}
+
+StringName FaustScript::_get_instance_base_type() const
+{
+    return ScriptExtension::_get_instance_base_type();
 }
 
 TypedArray<Dictionary> FaustScript::_get_documentation() const

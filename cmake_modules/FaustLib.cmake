@@ -4,16 +4,6 @@
 ## Create Faust Lib
 message(STATUS "Faust Library")
 
-## For Windows use static runtime instead of default dynamic runtime
-if(MSVC)
-    set(CompilerFlags
-            CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
-            CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE)
-    foreach(CompilerFlag ${CompilerFlags})
-        string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
-    endforeach()
-endif()
-
 ## Save the llvm directory and change it for subdirectory
 if(DEFINED LLVM_DIR)
     set(LLVM_DIR_TEMP   ${LLVM_DIR})
@@ -31,7 +21,7 @@ set(INCLUDE_HTTP        OFF CACHE STRING  "Include Faust HTTPD library" FORCE)
 set(ASMJS_BACKEND  OFF                            CACHE STRING  "Include ASMJS backend" FORCE)
 set(C_BACKEND      OFF                            CACHE STRING  "Include C backend"         FORCE)
 set(CPP_BACKEND    OFF                            CACHE STRING  "Include CPP backend"       FORCE)
-set(FIR_BACKEND    COMPILER STATIC DYNAMIC        CACHE STRING  "Include FIR backend"       FORCE)
+set(FIR_BACKEND    OFF                            CACHE STRING  "Include FIR backend"       FORCE)
 set(INTERP_BACKEND COMPILER STATIC DYNAMIC        CACHE STRING  "Include INTERPRETER backend" FORCE)
 set(JAVA_BACKEND   OFF                            CACHE STRING  "Include JAVA backend"      FORCE)
 set(JS_BACKEND     OFF                            CACHE STRING  "Include JAVASCRIPT backend" FORCE)
@@ -41,6 +31,19 @@ set(RUST_BACKEND   OFF                            CACHE STRING  "Include RUST ba
 set(WASM_BACKEND   OFF                            CACHE STRING  "Include WASM backend"  FORCE)
 
 option(LINK_LLVM_STATIC OFF)
+
+## For Windows use static runtime instead of default dynamic runtime
+if(WIN32 OR MSYS)
+    set(INCLUDE_EXECUTABLE ON CACHE STRING  "Include runtime executable"  FORCE)
+    if (MSVC)
+        set(CompilerFlags
+                CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+                CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE)
+        foreach(CompilerFlag ${CompilerFlags})
+            string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+        endforeach()
+    endif ()
+endif()
 
 ## Call the faust cmakelist.txt
 add_subdirectory(./faust/build EXCLUDE_FROM_ALL)

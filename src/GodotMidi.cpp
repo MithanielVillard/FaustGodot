@@ -17,7 +17,6 @@ bool GodotMidi::startMidi()
     m_midiListIt = MidiHandlerFaust::MidiCallbacks.end();
     std::advance(m_midiListIt, -1);
 
-    UtilityFunctions::print("Attached to MidiHandler");
     return true;
 }
 

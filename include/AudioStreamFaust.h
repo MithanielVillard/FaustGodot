@@ -79,7 +79,7 @@ namespace godot
         uptr<GodotMidi> m_midiHandler;
         uptr<MidiUI> m_midiUI;
 
-        dsp* m_pDspInstance;
+        dsp* m_pDspInstance { nullptr };
 
         FaustScript::ListIt m_faustScriptIt;
         Ref<FaustScript> m_faustScript;

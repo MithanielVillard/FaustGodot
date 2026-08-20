@@ -32,6 +32,7 @@ public:
     bool _is_tool() const override;
     bool _has_static_method(const StringName &p_method) const override;
     void _update_exports() override;
+    StringName _get_instance_base_type() const override;
 
     TypedArray<Dictionary> _get_documentation() const override;
     ScriptLanguage* _get_language() const override;
