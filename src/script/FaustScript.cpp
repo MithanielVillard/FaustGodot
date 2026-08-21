@@ -38,7 +38,6 @@ bool FaustScript::_can_instantiate() const
 
 Error FaustScript::_reload(bool p_keep_state)
 {
-    UtilityFunctions::print(std::filesystem::current_path().c_str());
     const char* argv[] =  { "--import-dir", "bin/libraries" };
     std::string error_msg;
     

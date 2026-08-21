@@ -110,6 +110,11 @@ TypedArray<Dictionary> FaustScriptLanguage::_debug_get_current_stack_info()
     return ScriptLanguageExtension::_debug_get_current_stack_info();
 }
 
+void FaustScriptLanguage::_reload_all_scripts()
+{
+    ScriptLanguageExtension::_reload_all_scripts();
+}
+
 bool FaustScriptLanguage::_supports_documentation() const
 {
     return false;

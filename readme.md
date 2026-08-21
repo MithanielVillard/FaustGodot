@@ -14,16 +14,16 @@ Just launch your Godot project and make sure the extension is **enabled** in the
 >[!NOTE]
 >Requires Godot version >= 4.1
 
-| Platform | Notes                                                                                                                 |
-|----------|-----------------------------------------------------------------------------------------------------------------------|
-| Macos    | Working ✅ (tested on Intel Mac Tahoe 26)                                                                              |
-| Linux    | Working ✅ (tested on CachyOs - Arch based distro)                                                                     |
-| Windows  | ⚠️ Faust Libraries not working due to a bug on Windows.<br/>Appart from that it works normally (tested on Windows 11) |
+| Platform | Notes                                                                                    |
+|----------|------------------------------------------------------------------------------------------|
+| Macos    | Working ✅ (tested on Intel Mac Tahoe 26)                                                 |
+| Linux    | Working ✅ (tested on CachyOs - Arch based distro)                                        |
+| Windows  | Working (tested on Windows 10 -  ⚠️ Based on the temporary Faust branch `interp-lib-bug` |
 
 ### Usage
 
 FaustGodot adds Faust as a new kind of script. They can be created the same way as a regular GDScript or C# Script
-but can't but directly attached to a node or a resource. They can only be referenced by an `AudioStreamFaust` or `AudioEffectFaust`.
+but can't but directly attached to a node or a resource. They can only be referenced by an `AudioStreamFaust`, `AudioStreamPolyphonicFaust` or `AudioEffectFaust`.
 
 >[!NOTE]
 > In order to have MIDI working you **_must_** place a `MidiHandlerFaust` node anywhere in your scene. Having multiple instances is useless. 
@@ -34,6 +34,7 @@ but can't but directly attached to a node or a resource. They can only be refere
 - Custom color theme with syntax highlighting
 - Use DSP as both `AudioStream` and `AudioEffect`
 - In editor and script access for modifying DSP parameters
+- MIDI and polyphonic instruments support with optionnal Global Effect DSP
 
 ### To-do
 
@@ -50,6 +51,11 @@ if you have only a few DSP scripts and performance is critical to your applicati
 
 `faust2godot` use the [CMake](https://cmake.org) project generator.
 Building project can take a while due to having to compile godot-cpp sdk and libfaust. Multithreaded compilation is highly recommended (`-j nbrThread`).
+
+On Windows you **must replace the Faust submodule** with the Faust branch `interp-lib-bug` this is temporary. It will be changed when
+this branch is merged with the main Faust branch.
+
+You must compile with **MSVC** and V**isual Studio as a generator** on Windows, otherwise build will fail.
 
 Building the GDExtension :
 ```shell
