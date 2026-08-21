@@ -97,3 +97,11 @@ Run tests :
 cd build
 ctest -V
 ```
+
+</br>
+<p align="center">
+  <img widht="50%" height="200px" src="documentation/img.png"/>
+</p>
+<p align="center">
+  <span>This project was made for GRAME during Google Summer of Code 2026</span>
+</p>
